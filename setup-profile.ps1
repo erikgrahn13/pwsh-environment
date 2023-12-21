@@ -1,17 +1,14 @@
+# Define the local profile path and cached profile path
 $profileDirectory = Split-Path $PROFILE
-if (-not (Test-Path $profileDirectory)) {
-    New-Item -ItemType Directory -Path $profileDirectory
-}
-
-if (-not (Test-Path $PROFILE)) {
-    New-Item -ItemType File -Path $PROFILE
-}
-
-# Path to the cached profile script
-$cachedProfilePath = Join-Path (Split-Path $PROFILE) "cachedProfile.ps1"
+$cachedProfilePath = Join-Path $profileDirectory "cachedProfile.ps1"
 
 # URL of the remote profile.ps1 on GitHub
 $remoteProfileUrl = "https://raw.githubusercontent.com/erikgrahn13/pwsh-environment/main/profile.ps1"
+
+# Ensure the profile directory exists
+if (-not (Test-Path $profileDirectory)) {
+    New-Item -ItemType Directory -Path $profileDirectory
+}
 
 # Function to download the latest profile script
 function Update-CachedProfile {
@@ -19,21 +16,15 @@ function Update-CachedProfile {
     Write-Host "Updated cached profile from GitHub."
 }
 
-# Check if the cached profile exists
-if (Test-Path $cachedProfilePath) {
-    # Compare the last modified time of the cached file with the current time
-    $cachedProfileLastWriteTime = (Get-Item $cachedProfilePath).LastWriteTime
-    $currentTime = Get-Date
-    $timeDifference = $currentTime - $cachedProfileLastWriteTime
+# Download the remote profile script
+Update-CachedProfile
 
-    # Update the cached profile if it's older than a day (or your preferred interval)
-    if ($timeDifference.TotalDays -gt 1) {
-        Update-CachedProfile
-    }
-} else {
-    # If the cached profile doesn't exist, download it
-    Update-CachedProfile
-}
-
+# Add code to execute the cached profile script in the local profile
+$profileScriptContent = @"
 # Execute the cached profile script
-. $cachedProfilePath
+. '$cachedProfilePath'
+"@
+
+Set-Content -Path $PROFILE -Value $profileScriptContent -Force
+
+Write-Host "PowerShell profile has been set up."
