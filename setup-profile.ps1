@@ -1,3 +1,12 @@
+$profileDirectory = Split-Path $PROFILE
+if (-not (Test-Path $profileDirectory)) {
+    New-Item -ItemType Directory -Path $profileDirectory
+}
+
+if (-not (Test-Path $PROFILE)) {
+    New-Item -ItemType File -Path $PROFILE
+}
+
 # Path to the cached profile script
 $cachedProfilePath = Join-Path (Split-Path $PROFILE) "cachedProfile.ps1"
 
