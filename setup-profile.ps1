@@ -43,4 +43,4 @@ if (-not (Test-Path $destDir)) {
     New-Item -ItemType Directory -Path $destDir
 }
 
-# Invoke-WebRequest -Uri $fileUrl -OutFile $destFile
+Invoke-WebRequest -Uri $fileUrl -OutFile $destFile
