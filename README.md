@@ -1,4 +1,4 @@
-# pwsh-environment
+# Powershell
 
 ## Invoke folling command on the command line
 ```
