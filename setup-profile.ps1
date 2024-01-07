@@ -30,7 +30,7 @@ Set-Content -Path $PROFILE -Value $profileScriptContent -Force
 Write-Host "PowerShell profile has been set up."
 
 # copy the starship config
- Define the URL of the raw file from the GitHub repository
+# Define the URL of the raw file from the GitHub repository
 $fileUrl = "https://raw.githubusercontent.com/erikgrahn13/shell-environment/main/starship.toml"
 
 # Define the destination directory and file name within the user's home directory
